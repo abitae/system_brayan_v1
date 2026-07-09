@@ -1,0 +1,136 @@
+/***
+=============================================
+Working Process One
+=============================================
+***/
+.working-process-one {
+    position: relative;
+    display: block;
+    background: var(--logistiq-gray-bg);
+    padding: 120px 0px 90px;
+    z-index: 1;
+}
+
+.working-process-one__pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-position: center center;
+    background-attachment: scroll;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.working-process-one .container {
+    position: relative;
+}
+
+.working-process-one .shape1 {
+    position: absolute;
+    top: 242px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    z-index: -1;
+}
+
+.working-process-one__single {
+    position: relative;
+    display: block;
+    margin-bottom: 30px;
+}
+
+.working-process-one__single .icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 110px;
+    height: 110px;
+    background: var(--logistiq-white);
+    -webkit-box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.06);
+    box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.06);
+    margin: 0 auto 22px;
+}
+
+.working-process-one__single .icon .count-box {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: var(--logistiq-base);
+    color: var(--logistiq-white);
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 700;
+}
+
+.working-process-one__single .icon span {
+    position: relative;
+    display: inline-block;
+    color: var(--logistiq-base);
+    font-size: 50px;
+    line-height: 50px;
+    transition-delay: 0.1s;
+    transition: all 500ms ease;
+}
+
+.working-process-one__single:hover .icon span {
+    transform: rotateY(180deg);
+    transition-delay: 0.1s;
+}
+
+.working-process-one__single .content-box {
+    position: relative;
+    display: block;
+    text-align: center;
+}
+
+.working-process-one__single .content-box h2 {
+    font-size: 28px;
+    line-height: 35px;
+    font-weight: 700;
+    text-transform: capitalize;
+    margin-bottom: 14px;
+}
+
+.working-process-one__single .content-box h2 a {
+    color: var(--logistiq-black);
+}
+
+.working-process-one__single .content-box h2 a:hover {
+    color: var(--logistiq-base);
+}
+
+.working-process-one__single .content-box p {
+    margin: 0;
+}
+
+
+.working-process-one__single .plane-icon {
+    position: absolute;
+    top: 37px;
+    right: -35px;
+}
+
+.working-process-one__single .plane-icon span {
+    position: relative;
+    display: block;
+}
+
+.working-process-one__single .plane-icon span::before {
+    position: relative;
+    display: inline-block;
+    color: var(--logistiq-base);
+    font-size: 35px;
+    line-height: 35px;
+    transform: rotate(70deg);
+}

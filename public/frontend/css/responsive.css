@@ -1,0 +1,230 @@
+
+@media only screen and (max-width: 1900px){
+    .calculate-1-right-abs {
+        position: relative;
+        max-width: 500px !important;
+    }
+    .calculate-1-right-abs img {
+        max-width: 400px !important;
+        height: 100%;
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 1200px){
+    .container {
+        padding: 0px !important;
+    }
+}
+@media only screen and (max-width: 1200px){
+	.container {
+        padding: 0 15px !important;
+    }
+}
+
+
+@media only screen and (max-width: 1023px){
+	
+}
+
+@media only screen and (max-width: 991px){
+    .lh-10 {
+        line-height: 14px !important;
+    }
+    .lh-11 {
+        line-height: 15px !important;
+    }
+    .nav-1 .nav-itm-wrapper > ul > li,
+    .nav-2 .nav-itm-wrapper > ul > li {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .about-2-content .about-2-content-img img {
+        width: 100%;
+        object-fit: cover;
+        object-position: top;
+        max-height: 250px;
+    }
+    
+    .testimonial-2 .testimonial-2-text {
+        padding-left: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-right: 0;
+        text-align: justify;
+    }
+    
+    .testimonial-2 .testimonial-2-text:before {
+        top: 0;
+        left: 5px;
+    }
+    
+    .testimonial-2 .owl-dots-wrapper {
+        bottom: 60px;
+        left: 30%;
+    }
+    .callout-2-content {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flex;
+        display: -o-flex;
+        display: flex;
+        justify-content: center;
+    }
+    .about-3-img-wrapper img {
+        width: 100%;
+        object-position: top;
+        object-fit: cover;
+        max-height: 350px;
+    }
+    .calculate-1-right-abs {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 1199px){
+    .services-2-left-content-abs {
+        display: none;
+    }
+    .testimonial-2 .testimonial-2-text {
+        padding-left: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-right: 0;
+        text-align: justify;
+    }
+    .testimonial-2 .testimonial-2-text:before {
+        top: 0;
+        left: 5px;
+    }
+
+    .testimonial-2 .owl-dots-wrapper {
+        bottom: 100px;
+        left: 30%;
+    }
+    .nav-3 .nav-itm-wrapper > ul > li{ 
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+}
+
+@media only screen and (max-width: 463px){
+    .footer-2-news-submit {
+        top: auto;
+        bottom: 3px;
+        right: auto;
+        left: 220px;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .nav-itm-wrapper {
+        display: none;
+    }
+    .hidden-bar-opener {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .lh-10 {
+        line-height: 16px !important;
+    }
+    
+    .lh-11 {
+        line-height: 18px !important;
+    }
+    
+    .header-text {
+        line-height: 32px !important;
+    }
+    
+    .news-1-right .quick-quote-head {
+        line-height: 24px;
+    }
+    
+    .xs-fn {
+        float: none !important;
+    }
+    
+    .xs-center-all {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flex;
+        display: -o-flex;
+        display: flex;
+        justify-content: center;
+    }
+    .xs-center {
+        text-align: center;
+    }
+    
+    .header-2-info li, .header-3-info li {
+        border-top: 1px dashed #2bac25;
+    }
+    .header-3 {
+        background: #222222 !important;
+    }
+    .header-nav-wrapper {
+        position: relative;
+    }
+    
+    .about-2 {
+        margin-top: 120px;
+    }
+    
+    .testimonial-img-wrapper {
+        width: 40%;
+        margin: 0 auto !important;
+    }
+
+    .testimonial-2 .owl-dots-wrapper {
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .footer-2-nav {
+        display: block !important;
+    }
+    
+    .about-3-img-wrapper img {
+        max-height: 250px;
+    }
+    .testimonial-3 .owl-dots-wrapper {
+        bottom: -30px;
+    }
+    .search-popup .search-form fieldset input[type="search"], .search-popup .search-form fieldset input.form-control {
+        padding: 0 0 0 10px;
+    }
+    .search-popup .search-form fieldset input[type="submit"] {
+        width: auto;
+    }
+    .faq-3 .faq-3-head {
+        line-height: 22px;
+    }
+    .faq-3 .panel-heading h4 > a {
+        line-height: 16px;
+    }
+    .stricky.stricky-fixed {
+        position: relative;
+        background: #fff;
+        animation-name: inherit;
+    }
+}
+
+
+@media only screen and (max-width: 600px){
+    .tp-caption {
+        display: none !important;
+    }
+}
+
+
+
+
+
+
+
+
+
