@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "~animate.css/animate";
+
+.mary-table-pagination span[aria-current="page"] > span {
+    @apply bg-primary text-base-100;
+}
+
+.mary-table-pagination span[aria-disabled="true"] span {
+    @apply bg-inherit;
+}
+
+.mary-table-pagination button {
+    @apply bg-base-100;
+}
+
+/* Header */
+.app-header {
+    @apply z-30;
+}
+
+/* Sidebar refinements */
+.app-sidebar .menu li > *:not(ul):not(.menu-title):not(details):not(.btn) {
+    @apply rounded-lg;
+}
+
+.app-sidebar .menu li > *:not(ul):not(.menu-title):not(details):not(.btn).active,
+.app-sidebar .menu li > details > summary.active {
+    @apply bg-primary/10 text-primary font-medium;
+}
+
+.app-sidebar .menu :where(li > details > summary):after {
+    @apply opacity-40;
+}
+
+.app-sidebar {
+    @apply shadow-lg shadow-base-300/20;
+}
