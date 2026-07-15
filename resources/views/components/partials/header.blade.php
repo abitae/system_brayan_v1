@@ -1,8 +1,11 @@
 @php
     $user = auth()->user();
     $sucursal = $user?->sucursal;
+    $invoiceAlertStart = \Carbon\Carbon::now('America/Lima')->startOfMonth();
+    $invoiceAlertEnd = \Carbon\Carbon::now('America/Lima')->endOfMonth();
     $invoiceAlertQuery = \App\Models\Facturacion\Invoice::query()
         ->whereIn('tipoDoc', ['01', '03'])
+        ->whereBetween('fechaEmision', [$invoiceAlertStart, $invoiceAlertEnd])
         ->where(fn ($query) => $query->whereNull('estado')->orWhere('estado', '!=', 'ANULADO'));
     $pendingInvoices = (clone $invoiceAlertQuery)
         ->whereNull('cdr_code')

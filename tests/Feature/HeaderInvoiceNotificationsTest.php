@@ -9,6 +9,7 @@ use App\Models\Frontend\Message;
 use App\Models\Frontend\Reclamacion;
 use App\Models\Package\Customer;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
@@ -28,6 +29,7 @@ class HeaderInvoiceNotificationsTest extends TestCase
 
     public function test_header_muestra_boletas_y_facturas_pendientes_y_con_error(): void
     {
+        Carbon::setTestNow(Carbon::parse('2024-07-15 10:00:00', 'America/Lima'));
         Permission::create(['name' => 'facturacion.invoice', 'guard_name' => 'web']);
 
         $company = $this->createCompany();
@@ -72,6 +74,14 @@ class HeaderInvoiceNotificationsTest extends TestCase
             'cdr_code' => null,
             'errorCode' => null,
         ]);
+        $this->createInvoice($company, $sucursal, $client, [
+            'tipoDoc' => '01',
+            'serie' => 'F001',
+            'correlativo' => '6',
+            'fechaEmision' => '2024-06-30 23:59:59',
+            'cdr_code' => null,
+            'errorCode' => null,
+        ]);
 
         Message::create([
             'name' => 'Mensaje Test',
@@ -102,6 +112,8 @@ class HeaderInvoiceNotificationsTest extends TestCase
             ->assertSee('2')
             ->assertDontSee('Mensajes')
             ->assertDontSee('Reclamaciones');
+
+        Carbon::setTestNow();
     }
 
     private function createCompany(): Company
