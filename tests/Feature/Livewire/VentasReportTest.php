@@ -205,6 +205,59 @@ class VentasReportTest extends TestCase
         $this->assertSame('SUCURSAL A', $rows[0]['articulo']);
     }
 
+    public function test_lista_ordenada_por_fecha_emision_descendente(): void
+    {
+        $company = $this->createCompany();
+        $sucursal = $this->createSucursal('SUC01');
+        $client = $this->createCustomer();
+
+        $older = $this->createInvoice($company, $sucursal, $client, [
+            'fechaEmision' => '2024-07-05 09:00:00',
+            'correlativo' => '1',
+        ]);
+        $this->createInvoiceDetail($older, ['descripcion' => 'PRIMERO']);
+
+        $newer = $this->createInvoice($company, $sucursal, $client, [
+            'fechaEmision' => '2024-07-20 09:00:00',
+            'correlativo' => '2',
+        ]);
+        $this->createInvoiceDetail($newer, ['descripcion' => 'ULTIMO']);
+
+        $rows = Livewire::test(VentasReport::class)
+            ->set('filtroMes', '2024-07')
+            ->call('refreshRows')
+            ->get('rows');
+
+        $this->assertCount(2, $rows);
+        $this->assertSame('ULTIMO', $rows[0]['articulo']);
+        $this->assertSame('PRIMERO', $rows[1]['articulo']);
+    }
+
+    public function test_pagina_la_lista_en_la_vista(): void
+    {
+        $company = $this->createCompany();
+        $sucursal = $this->createSucursal('SUC01');
+        $client = $this->createCustomer();
+
+        for ($i = 1; $i <= 16; $i++) {
+            $invoice = $this->createInvoice($company, $sucursal, $client, [
+                'fechaEmision' => sprintf('2024-07-%02d 09:00:00', $i),
+                'correlativo' => (string) $i,
+            ]);
+            $this->createInvoiceDetail($invoice, ['descripcion' => "LINEA {$i}"]);
+        }
+
+        Livewire::test(VentasReport::class)
+            ->set('filtroMes', '2024-07')
+            ->set('perPage', 10)
+            ->assertViewHas('lineas', function ($lineas) {
+                return $lineas instanceof \Illuminate\Pagination\LengthAwarePaginator
+                    && $lineas->total() === 16
+                    && $lineas->count() === 10
+                    && $lineas->first()['articulo'] === 'LINEA 16';
+            });
+    }
+
     public function test_descarga_excel_con_nombre_mensual(): void
     {
         Carbon::setTestNow(Carbon::parse('2024-07-15 10:11:12', 'America/Lima'));

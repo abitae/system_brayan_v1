@@ -9,15 +9,20 @@ use App\Models\Facturacion\Invoice;
 use App\Models\Facturacion\Note;
 use App\Traits\UtilsTrait;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 use Mary\Traits\Toast;
 
 class VentasReport extends Component
 {
-    use Toast, UtilsTrait;
+    use Toast, UtilsTrait, WithPagination, WithoutUrlPagination;
+
+    private const DEFAULT_PER_PAGE = 15;
 
     public string $title = 'REGISTRO DE VENTAS';
 
@@ -30,6 +35,8 @@ class VentasReport extends Component
     public string $filtroOrigen = 'todos';
 
     public bool $soloSucursalUsuario = false;
+
+    public int $perPage = self::DEFAULT_PER_PAGE;
 
     public int $totalDocumentos = 0;
 
@@ -60,7 +67,21 @@ class VentasReport extends Component
     {
         $this->refreshRows();
 
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $items = collect($this->rows)
+            ->slice(($currentPage - 1) * $this->perPage, $this->perPage)
+            ->values();
+
+        $lineas = new LengthAwarePaginator(
+            $items,
+            $this->totalLineas,
+            $this->perPage,
+            $currentPage,
+            ['path' => request()->url(), 'pageName' => 'page']
+        );
+
         return view('livewire.report.ventas-report', [
+            'lineas' => $lineas,
             'sucursals' => $this->getSucursales(),
             'origenes' => $this->getOrigenes(),
             'periodoInicio' => $this->periodRange()[0],
@@ -72,6 +93,20 @@ class VentasReport extends Component
     {
         if (! preg_match('/^\d{4}-\d{2}$/', $this->filtroMes)) {
             $this->filtroMes = now('America/Lima')->format('Y-m');
+        }
+
+        $this->resetPage();
+    }
+
+    public function updatedPerPage(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updated(string $property): void
+    {
+        if (in_array($property, ['filtroSucursal', 'filtroOrigen'], true)) {
+            $this->resetPage();
         }
     }
 
@@ -137,10 +172,10 @@ class VentasReport extends Component
         return $invoices
             ->concat($notes)
             ->sortBy([
-                ['fecha_emision_raw', 'asc'],
+                ['fecha_emision_raw', 'desc'],
                 ['tipo_doc', 'asc'],
                 ['serie', 'asc'],
-                ['numero', 'asc'],
+                ['numero', 'desc'],
             ])
             ->values();
     }

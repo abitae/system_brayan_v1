@@ -42,7 +42,8 @@
             ];
         @endphp
 
-        <x-mary-table :headers="$headers" :rows="collect($rows)->take(50)" striped>
+        <x-mary-table :headers="$headers" :rows="$lineas" striped with-pagination per-page="perPage"
+            :per-page-values="[10, 15, 25, 50, 100]">
             @scope('cell_comprobante', $row)
                 <div class="font-mono font-medium">{{ $row['serie'] }}-{{ $row['numero'] }}</div>
                 <div class="text-xs opacity-70">Tipo {{ $row['tipo_doc'] }}</div>
@@ -70,11 +71,5 @@
                 <div class="text-xs opacity-70">{{ $row['forma_pago'] }}</div>
             @endscope
         </x-mary-table>
-
-        @if ($totalLineas > 50)
-            <p class="text-xs opacity-70 mt-2">
-                Mostrando 50 de {{ number_format($totalLineas) }} líneas. El Excel incluirá todo el mes filtrado.
-            </p>
-        @endif
     </x-mary-card>
 </div>
