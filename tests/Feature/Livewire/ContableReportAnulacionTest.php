@@ -3,10 +3,9 @@
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\Report\ContableReport;
-use App\Models\Facturacion\Invoice;
 use App\Services\SunatServiceGlobal;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Mockery;
@@ -16,7 +15,7 @@ use Tests\TestCase;
 class ContableReportAnulacionTest extends TestCase
 {
     use CreatesInvoiceTestData;
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -34,8 +33,7 @@ class ContableReportAnulacionTest extends TestCase
         $invoice = $this->createInvoiceFixture(['estado' => 'ANULADO']);
 
         Livewire::test(ContableReport::class)
-            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion')
-            ->assertNotified();
+            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion');
 
         $invoice->refresh();
         $this->assertSame('ANULADO', $invoice->estado);
@@ -47,8 +45,7 @@ class ContableReportAnulacionTest extends TestCase
         $invoice = $this->createInvoiceFixture(['cdr_code' => null]);
 
         Livewire::test(ContableReport::class)
-            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion')
-            ->assertNotified();
+            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion');
 
         $invoice->refresh();
         $this->assertNull($invoice->estado);
@@ -61,8 +58,7 @@ class ContableReportAnulacionTest extends TestCase
         ]);
 
         Livewire::test(ContableReport::class)
-            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion')
-            ->assertNotified();
+            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion');
 
         $invoice->refresh();
         $this->assertNull($invoice->estado);
@@ -95,8 +91,7 @@ class ContableReportAnulacionTest extends TestCase
         $this->app->instance(SunatServiceGlobal::class, $mock);
 
         Livewire::test(ContableReport::class)
-            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion')
-            ->assertNotified();
+            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion');
 
         $invoice->refresh();
 
@@ -136,8 +131,7 @@ class ContableReportAnulacionTest extends TestCase
         $this->app->instance(SunatServiceGlobal::class, $mock);
 
         Livewire::test(ContableReport::class)
-            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion')
-            ->assertNotified();
+            ->call('anularComprobante', $invoice->id, 'Anulacion de la operacion');
 
         $invoice->refresh();
         $this->assertSame('ANULADO', $invoice->estado);

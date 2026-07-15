@@ -32,5 +32,6 @@
     @include('components.partials.sidebar')
     <x-mary-toast />
     <x-mary-spotlight />
+    @livewire('subscription-end-notice')
 </body>
 </html>

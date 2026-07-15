@@ -97,6 +97,9 @@
                         @can('report.contable')
                             <x-mary-menu-item title="Reporte contable" icon="o-calculator" link="{{ route('report.contable') }}" />
                         @endcan
+                        @can('report.ventas')
+                            <x-mary-menu-item title="Registro de ventas" icon="o-document-chart-bar" link="{{ route('report.ventas') }}" />
+                        @endcan
                     </x-mary-menu-sub>
 
                     @can('menu.configuracion')

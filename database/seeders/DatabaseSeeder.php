@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             PermisoSeeder::class,
             TransportistaSeeder::class,
             VehiculoSeeder::class,
-
+            SubscriptionNoticeSeeder::class,
         ]);
         //Customer::factory(10)->create();
 

@@ -34,6 +34,7 @@ use App\Livewire\Package\ReturnPackageLive;
 use App\Livewire\Package\SendPackageLive;
 use App\Livewire\Report\ContableReport;
 use App\Livewire\Report\EncomiendasReport;
+use App\Livewire\Report\VentasReport;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
@@ -130,6 +131,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/report/encomiendas', EncomiendasReport::class)->name('report.encomiendas')->middleware('can:report.encomienda');
     Route::get('/report/contable', ContableReport::class)->name('report.contable')->middleware('can:report.contable');
+    Route::get('/report/ventas', VentasReport::class)->name('report.ventas')->middleware('can:report.ventas');
     Route::get('/cobrar/encomiendas', EncomiendaCobrar::class)->name('cobrar.encomiendas');
 });
 
