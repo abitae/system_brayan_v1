@@ -1,9 +1,17 @@
 @php
     $user = auth()->user();
     $sucursal = $user?->sucursal;
-    $pendingMessages = \App\Models\Frontend\Message::where('isActive', true)->count();
-    $pendingReclamos = \App\Models\Frontend\Reclamacion::where('isActive', true)->count();
-    $notifications = $pendingMessages + $pendingReclamos;
+    $invoiceAlertQuery = \App\Models\Facturacion\Invoice::query()
+        ->whereIn('tipoDoc', ['01', '03'])
+        ->where(fn ($query) => $query->whereNull('estado')->orWhere('estado', '!=', 'ANULADO'));
+    $pendingInvoices = (clone $invoiceAlertQuery)
+        ->whereNull('cdr_code')
+        ->whereNull('errorCode')
+        ->count();
+    $errorInvoices = (clone $invoiceAlertQuery)
+        ->whereNotNull('errorCode')
+        ->count();
+    $notifications = $pendingInvoices + $errorInvoices;
     $initials = collect(explode(' ', $user?->name ?? 'U'))
         ->filter()
         ->take(2)
@@ -34,7 +42,7 @@
 
         <x-mary-theme-toggle darkTheme="business" lightTheme="light" class="btn-sm" />
 
-        @can('message.frontend')
+        @can('facturacion.invoice')
             <x-mary-dropdown class="hidden sm:block">
                 <x-slot:trigger>
                     <button type="button" class="btn btn-ghost btn-sm btn-square relative">
@@ -46,10 +54,8 @@
                         @endif
                     </button>
                 </x-slot:trigger>
-                <x-mary-menu-item icon="o-envelope" title="Mensajes ({{ $pendingMessages }})" link="{{ route('message.frontend') }}" />
-                @can('reclamaciones.frontend')
-                    <x-mary-menu-item icon="o-exclamation-triangle" title="Reclamaciones" link="{{ route('reclamaciones.frontend') }}" />
-                @endcan
+                <x-mary-menu-item icon="o-clock" title="Pendientes de envío ({{ $pendingInvoices }})" link="{{ route('facturacion.invoice') }}" />
+                <x-mary-menu-item icon="o-exclamation-triangle" title="Con error ({{ $errorInvoices }})" link="{{ route('facturacion.invoice') }}" />
             </x-mary-dropdown>
         @endcan
 
