@@ -71,6 +71,12 @@
             width: 100px;
         }
 
+        .qr-code-label {
+            font-size: 7px;
+            margin-top: 4px;
+            color: #333;
+        }
+
         .footer {
             text-align: center;
             font-size: 9px;
@@ -236,14 +242,17 @@
         </table>
     </div>
     <div class="qr-code">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Codigo_QR.svg/100px-Codigo_QR.svg.png?20080824194905"
-            alt="Código QR">
+        <img src="data:image/svg+xml;base64,{{ $qrCode }}" alt="Consulta validez SUNAT">
+        <p class="qr-code-label">Consulta validez en SUNAT</p>
     </div>
 
     <div class="footer">
         Gracias por su compra<br>
         Políticas de Envío<br>
         Corporación Logística Brayan Brush EIRL<br>
+        @if ($despache->xml_hash)
+            Hash: {{ $despache->xml_hash }}<br>
+        @endif
         Usuario: {{ $despache->encomienda->user->name }}
     </div>
 </body>

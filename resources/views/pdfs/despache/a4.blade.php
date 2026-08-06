@@ -145,6 +145,17 @@
             width: 100%;
         }
 
+        .qr-code {
+            width: 100px;
+            height: 100px;
+        }
+
+        .qr-code-label {
+            font-size: 8px;
+            margin-top: 4px;
+            color: #444;
+        }
+
         .footer-content {
             vertical-align: top;
             padding-left: 10px;
@@ -368,14 +379,17 @@
     <div class="footer">
         <table class="footer-table">
             <tr>
-                <td width="20%">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Codigo_QR.svg/100px-Codigo_QR.svg.png?20080824194905"
-                        alt="Código QR">
+                <td width="20%" style="text-align: center; vertical-align: top;">
+                    <img class="qr-code" src="data:image/svg+xml;base64,{{ $qrCode }}" alt="Consulta validez SUNAT">
+                    <p class="qr-code-label">Consulta validez en SUNAT</p>
                 </td>
                 <td class="footer-content">
                     Gracias por su compra<br>
                     Políticas de Envío<br>
                     Corporación Logística Brayan Brush EIRL<br>
+                    @if ($despache->xml_hash)
+                        Hash: {{ $despache->xml_hash }}<br>
+                    @endif
                     Usuario: {{ $despache->encomienda->user->name }}
                 </td>
             </tr>

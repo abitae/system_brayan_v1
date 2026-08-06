@@ -119,6 +119,8 @@ class pdfController extends Controller
     {
         $data = [
             'despache' => $despache,
+            'qrCode' => $this->qrCodeBase64(self::SUNAT_CONSULTA_CPE_URL, 100),
+            'sunatConsultaUrl' => self::SUNAT_CONSULTA_CPE_URL,
         ];
         $heigh = 370 + $despache->details->count() * 8;
         $pdf = Pdf::loadView(
@@ -279,6 +281,8 @@ class pdfController extends Controller
     {
         $data = [
             'despache' => $despache,
+            'qrCode' => $this->qrCodeBase64(self::SUNAT_CONSULTA_CPE_URL, 120),
+            'sunatConsultaUrl' => self::SUNAT_CONSULTA_CPE_URL,
         ];
         $pdf = Pdf::loadView(
             'pdfs.despache.a4',
