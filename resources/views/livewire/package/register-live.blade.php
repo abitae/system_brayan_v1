@@ -359,6 +359,36 @@
                         </div>
                     </div>
 
+                    <div class="md:col-span-2 rounded-xl border border-base-300/60 bg-base-100 overflow-hidden">
+                        <div class="flex items-center gap-3 px-4 py-3 bg-warning/5 border-b border-base-300/50">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/15">
+                                <x-mary-icon name="o-map-pin" class="w-5 h-5 text-warning" />
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-base-content">Puntos de traslado (Guía de remisión)</h3>
+                                <p class="text-xs text-base-content/60">Direcciones de partida y llegada para la guía electrónica</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 md:p-5">
+                            <div class="space-y-3 rounded-lg border border-base-300/50 bg-base-200/30 p-4">
+                                <p class="text-sm font-semibold text-base-content">Punto de partida (envío)</p>
+                                <x-mary-input label="Dirección" wire:model="partida_direccion"
+                                    placeholder="Dirección de origen" icon="o-home" class="w-full" />
+                                <x-mary-select label="Ubigeo" option-value="ubigeo2" option-label="texto_ubigeo"
+                                    placeholder="Seleccione ubigeo" wire:model="partida_ubigeo" :options="$ubigeos"
+                                    class="w-full" />
+                            </div>
+                            <div class="space-y-3 rounded-lg border border-base-300/50 bg-base-200/30 p-4">
+                                <p class="text-sm font-semibold text-base-content">Punto de llegada</p>
+                                <x-mary-input label="Dirección" wire:model="llegada_direccion"
+                                    placeholder="Dirección de destino" icon="o-map-pin" class="w-full" />
+                                <x-mary-select label="Ubigeo" option-value="ubigeo2" option-label="texto_ubigeo"
+                                    placeholder="Seleccione ubigeo" wire:model="llegada_ubigeo" :options="$ubigeos"
+                                    class="w-full" />
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="rounded-xl border border-base-300/60 bg-base-100 overflow-hidden">
                             <div class="flex items-center gap-2 px-4 py-3 bg-base-200/40 border-b border-base-300/50">

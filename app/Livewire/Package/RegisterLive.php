@@ -48,6 +48,7 @@ class RegisterLive extends Component
     public $tipoDocTraslado, $docTraslado, $emisorDocTraslado;
     public $docsTraslado;
     public $showDocTraslado = false;
+    public $partida_direccion, $partida_ubigeo, $llegada_direccion, $llegada_ubigeo;
     public function mount()
     {
         $this->docsTraslado = collect([])->keyBy('id');
@@ -63,6 +64,88 @@ class RegisterLive extends Component
         }
         $this->sucursal_dest_id = Sucursal::where('isActive', true)
             ->whereIn('id', $sucursalDestinoIds)->first()->id;
+
+        $this->loadPartidaFromSucursalOrigen();
+        $this->loadLlegadaDefaults();
+    }
+
+    private function loadPartidaFromSucursalOrigen(): void
+    {
+        $sucursal = Auth::user()->sucursal;
+        $this->partida_direccion = $sucursal->address;
+        $this->partida_ubigeo = $sucursal->ubigeo;
+    }
+
+    private function loadLlegadaFromSucursalDestino(): void
+    {
+        if (!$this->sucursal_dest_id) {
+            return;
+        }
+
+        $sucursal = Sucursal::find($this->sucursal_dest_id);
+        if ($sucursal) {
+            $this->llegada_direccion = $sucursal->address;
+            $this->llegada_ubigeo = $sucursal->ubigeo;
+        }
+    }
+
+    private function loadLlegadaFromDestinatario(): void
+    {
+        $this->llegada_direccion = $this->destinatario_address;
+        $this->llegada_ubigeo = $this->destinatario_ubigeo;
+    }
+
+    private function loadLlegadaDefaults(): void
+    {
+        if ($this->isHome) {
+            $this->loadLlegadaFromDestinatario();
+            return;
+        }
+
+        $this->loadLlegadaFromSucursalDestino();
+    }
+
+    public function updatedSucursalDestId(): void
+    {
+        if (!$this->isHome) {
+            $this->loadLlegadaFromSucursalDestino();
+        }
+    }
+
+    public function updatedIsHome($value): void
+    {
+        if ($value) {
+            $this->loadLlegadaFromDestinatario();
+            return;
+        }
+
+        $this->loadLlegadaFromSucursalDestino();
+    }
+
+    private function willGenerateGuia(): bool
+    {
+        $tipoComprobante = $this->estado_pago == 'CONTRA ENTREGA' ? 'TICKET' : $this->tipo_comprobante;
+
+        return $tipoComprobante !== 'TICKET' || $this->docsTraslado->isNotEmpty();
+    }
+
+    private function validateTrasladoAddresses(): void
+    {
+        if (!$this->willGenerateGuia()) {
+            return;
+        }
+
+        $this->validate([
+            'partida_direccion' => 'required|string',
+            'partida_ubigeo' => 'required|string',
+            'llegada_direccion' => 'required|string',
+            'llegada_ubigeo' => 'required|string',
+        ], [
+            'partida_direccion.required' => 'Error, es necesario ingresar la dirección del punto de partida!',
+            'partida_ubigeo.required' => 'Error, es necesario seleccionar el ubigeo del punto de partida!',
+            'llegada_direccion.required' => 'Error, es necesario ingresar la dirección del punto de llegada!',
+            'llegada_ubigeo.required' => 'Error, es necesario seleccionar el ubigeo del punto de llegada!',
+        ]);
     }
 
     public function render()
@@ -106,6 +189,7 @@ class RegisterLive extends Component
         ];
         $service = new ServiceTableSunat();
         $unidadMedidas = $service->getAll('sunat_03');
+        $ubigeos = $service->getAll('ubigeo');
         $metodoPagos = [
             ['id' => 'Efectivo', 'name' => 'Efectivo'],
             ['id' => 'Yape', 'name' => 'Yape'],
@@ -115,6 +199,7 @@ class RegisterLive extends Component
         return view('livewire.package.register-live', compact(
             'metodoPagos',
             'unidadMedidas',
+            'ubigeos',
             'headers_paquetes',
             'sucursales',
             'pagos',
@@ -401,6 +486,8 @@ class RegisterLive extends Component
         if ($this->remitente_type_code == '6' && strlen($this->remitente_code) == 11) {
             $this->emisorDocTraslado = $this->remitente_code;
         }
+
+        $this->loadLlegadaDefaults();
         $this->step++;
     }
     public function prev()
@@ -515,7 +602,7 @@ class RegisterLive extends Component
             $this->pin1 = $this->pin2 = 123;
         }
 
-
+        $this->validateTrasladoAddresses();
 
         if (isset($this->sucursal_dest_id, $this->pin1, $this->pin2) && $this->pin1 == $this->pin2) {
             $this->sucursal_destino = Sucursal::findOrFail($this->sucursal_dest_id);
@@ -573,6 +660,10 @@ class RegisterLive extends Component
             'pin' => $this->pin1,
             'isHome' => $this->isHome,
             'isReturn' => $this->isReturn,
+            'partida_direccion' => $this->partida_direccion,
+            'partida_ubigeo' => $this->partida_ubigeo,
+            'llegada_direccion' => $this->llegada_direccion,
+            'llegada_ubigeo' => $this->llegada_ubigeo,
         ]);
 
         $this->encomienda = $this->encomiendaForm->store($this->paquetes);

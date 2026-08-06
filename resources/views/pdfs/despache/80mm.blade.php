@@ -145,7 +145,9 @@
     </div>
     <div class="customer-info">
         <strong>ORIGEN :</strong>{{ $despache->encomienda->sucursal_remitente->name }}<br>
-        <strong>DESTINO:{{ $despache->encomienda->sucursal_destinatario->name }}</strong>
+        {{ $despache->partida_direccion }}<br>
+        <strong>DESTINO:</strong>{{ $despache->encomienda->sucursal_destinatario->name }}<br>
+        {{ $despache->llegada_direccion }}
     </div>
     <div class="customer-info">
         <strong>TRANSPORTE y CONDUCTOR</strong><br>

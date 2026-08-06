@@ -271,8 +271,10 @@
                     <h4 class="customer-heading">RUTA</h4>
                     <div class="customer-detail"><span
                             class="customer-label">ORIGEN:</span>{{ $despache->encomienda->sucursal_remitente->name }}</div>
+                    <div class="customer-detail">{{ $despache->partida_direccion }}</div>
                     <div class="customer-detail"><span
                             class="customer-label">DESTINO:</span>{{ $despache->encomienda->sucursal_destinatario->name }}</div>
+                    <div class="customer-detail">{{ $despache->llegada_direccion }}</div>
                 </div>
             </td>
         </tr>

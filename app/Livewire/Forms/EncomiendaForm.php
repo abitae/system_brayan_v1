@@ -19,6 +19,10 @@ class EncomiendaForm extends Form
     public $sucursal_id;
     public $customer_dest_id;
     public $sucursal_dest_id;
+    public $partida_direccion;
+    public $partida_ubigeo;
+    public $llegada_direccion;
+    public $llegada_ubigeo;
     public $customer_fact_id;
     public $cantidad;
     public $monto;
@@ -47,6 +51,10 @@ class EncomiendaForm extends Form
                 'sucursal_id' => $this->sucursal_id,
                 'customer_dest_id' => $this->customer_dest_id,
                 'sucursal_dest_id' => $this->sucursal_dest_id,
+                'partida_direccion' => $this->partida_direccion,
+                'partida_ubigeo' => $this->partida_ubigeo,
+                'llegada_direccion' => $this->llegada_direccion,
+                'llegada_ubigeo' => $this->llegada_ubigeo,
                 'customer_fact_id' => $this->customer_fact_id,
                 'cantidad' => $this->cantidad,
                 'monto' => $this->monto,
