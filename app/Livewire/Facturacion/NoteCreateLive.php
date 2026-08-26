@@ -8,6 +8,7 @@ use App\Models\Facturacion\Note;
 use App\Models\Package\Customer;
 use App\Models\Package\Paquete;
 use App\Services\ServiceTableSunat;
+use App\Traits\IgvCalculationTrait;
 use App\Traits\LogCustom;
 use App\Traits\SearchDocument;
 use App\Traits\UtilsTrait;
@@ -20,7 +21,7 @@ use Mary\Traits\Toast;
 
 class NoteCreateLive extends Component
 {
-    use LogCustom, Toast, WithPagination, WithoutUrlPagination, SearchDocument, UtilsTrait;
+    use LogCustom, Toast, WithPagination, WithoutUrlPagination, SearchDocument, UtilsTrait, IgvCalculationTrait;
     public $title = 'NOTA DE CREDITO';
     public $sub_title = 'Crear Nota de Crédito';
     public $tipoDocAfectado = '03';
@@ -251,8 +252,9 @@ class NoteCreateLive extends Component
     public function calculateTotals()
     {
         $this->total = round($this->paquetes->sum('sub_total'), 2);
-        $this->sub_total = round($this->total / 1.18, 2);
-        $this->igv = round($this->total - $this->sub_total, 2);
+        $split = $this->calcIgvMonto($this->total);
+        $this->sub_total = $split['base'];
+        $this->igv = $split['igv'];
     }
     public function test()
     {
@@ -315,22 +317,15 @@ class NoteCreateLive extends Component
         $note->save();
 
         foreach ($this->paquetes as $paquete) {
-            $mtoValorUnitario = round($paquete['amount'] / 1.18, 2);
-            $note->details()->create([
+            $note->details()->create(array_merge([
                 'note_id' => $note->id,
                 'tipAfeIgv' => '10',
                 'codProducto' => $paquete['id'],
                 'unidad' => $paquete['und_medida'],
                 'descripcion' => $paquete['description'],
                 'cantidad' => $paquete['cantidad'],
-                'mtoValorUnitario' => $mtoValorUnitario,
-                'mtoValorVenta' => $mtoValorUnitario * $paquete['cantidad'],
-                'mtoBaseIgv' => $mtoValorUnitario * $paquete['cantidad'],
                 'porcentajeIgv' => 18,
-                'igv' => ($paquete['amount'] - $mtoValorUnitario) * $paquete['cantidad'],
-                'totalImpuestos' => ($paquete['amount'] - $mtoValorUnitario) * $paquete['cantidad'],
-                'mtoPrecioUnitario' => $paquete['amount'],
-            ]);
+            ], $this->calcIgvLinea($paquete['amount'], $paquete['cantidad'])));
         }
 
         $this->client->update([

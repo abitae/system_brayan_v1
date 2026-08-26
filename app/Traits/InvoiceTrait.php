@@ -16,6 +16,8 @@ use Luecano\NumeroALetras\NumeroALetras;
 
 trait InvoiceTrait
 {
+    use IgvCalculationTrait;
+
     public function storeInvoce(Encomienda $encomienda)
     {
         $this->setTicket($encomienda);
@@ -31,8 +33,9 @@ trait InvoiceTrait
     {
         $company = Company::first();
         $montoTotalIncIGV = $encomienda->paquetes->sum('sub_total');
-        $mtoOperGravadas = round($montoTotalIncIGV / 1.18, 2);
-        $igv = $montoTotalIncIGV - $mtoOperGravadas;
+        $split = $this->calcIgvMonto($montoTotalIncIGV);
+        $mtoOperGravadas = $split['base'];
+        $igv = $split['igv'];
 
         $ticket = Ticket::create([
             'encomienda_id' => $encomienda->id,
@@ -61,28 +64,22 @@ trait InvoiceTrait
     }
     private function createTicketDetail($ticketId, $paquete)
     {
-        $mtoValorUnitario = round($paquete->amount / 1.18, 2);
-        TicketDetail::create([
+        TicketDetail::create(array_merge([
             'ticket_id' => $ticketId,
             'tipAfeIgv' => '10',
             'codProducto' => $paquete->id,
             'unidad' => $paquete->und_medida,
             'descripcion' => 'SERVICIO DE TRASLADO ' . $paquete->description,
             'cantidad' => $paquete->cantidad,
-            'mtoValorUnitario' => $mtoValorUnitario,
-            'mtoValorVenta' => $mtoValorUnitario * $paquete->cantidad,
-            'mtoBaseIgv' => $mtoValorUnitario * $paquete->cantidad,
             'porcentajeIgv' => 18,
-            'igv' => ($paquete->amount - $mtoValorUnitario) * $paquete->cantidad,
-            'totalImpuestos' => ($paquete->amount - $mtoValorUnitario) * $paquete->cantidad,
-            'mtoPrecioUnitario' => $paquete->amount,
-        ]);
+        ], $this->calcIgvLinea($paquete->amount, $paquete->cantidad)));
     }
     private function setInvoice(Encomienda $encomienda, $tipo_comprobante)
     {
         $montoTotalIncIGV = $encomienda->paquetes->sum('sub_total');
-        $mtoOperGravadas = round($montoTotalIncIGV / 1.18, 2);
-        $igv = $montoTotalIncIGV - $mtoOperGravadas;
+        $split = $this->calcIgvMonto($montoTotalIncIGV);
+        $mtoOperGravadas = $split['base'];
+        $igv = $split['igv'];
         $formatter = new NumeroALetras();
         $monto_letras = $formatter->toInvoice($montoTotalIncIGV, 2, 'SOLES');
 
@@ -148,30 +145,24 @@ trait InvoiceTrait
     }
     private function createInvoiceDetail($invoiceId, $paquete)
     {
-        $mtoValorUnitario = round($paquete->amount / 1.18, 2);
-        InvoiceDetail::create([
+        InvoiceDetail::create(array_merge([
             'invoice_id' => $invoiceId,
             'tipAfeIgv' => '10',
             'codProducto' => $paquete->id,
             'unidad' => $paquete->und_medida,
             'descripcion' => 'SERVICIO TRASLADO ' . $paquete->description,
             'cantidad' => $paquete->cantidad,
-            'mtoValorUnitario' => $mtoValorUnitario,
-            'mtoValorVenta' => $mtoValorUnitario * $paquete->cantidad,
-            'mtoBaseIgv' => $mtoValorUnitario * $paquete->cantidad,
             'porcentajeIgv' => 18,
-            'igv' => ($paquete->amount - $mtoValorUnitario) * $paquete->cantidad,
-            'totalImpuestos' => ($paquete->amount - $mtoValorUnitario) * $paquete->cantidad,
-            'mtoPrecioUnitario' => $paquete->amount,
-        ]);
+        ], $this->calcIgvLinea($paquete->amount, $paquete->cantidad)));
     }
     private function setGuiTrans(Encomienda $encomienda)
     {   //dd($encomienda);
         $company = Company::first();
         $correlativo = Despatche::count() + 1;
         $montoTotalIncIGV = $encomienda->paquetes->sum('sub_total');
-        $mtoOperGravadas = round($montoTotalIncIGV / 1.18, 2);
-        $igv = $montoTotalIncIGV - $mtoOperGravadas;
+        $split = $this->calcIgvMonto($montoTotalIncIGV);
+        $mtoOperGravadas = $split['base'];
+        $igv = $split['igv'];
         $formatter = new NumeroALetras();
         $monto_letras = $formatter->toInvoice($montoTotalIncIGV, 2, 'SOLES');
         $despatch = Despatche::create([
@@ -218,21 +209,14 @@ trait InvoiceTrait
     }
     private function createDespatcheDetail($despatcheId, $paquete)
     {
-        $mtoValorUnitario = round($paquete->amount / 1.18, 2);
-        DespatcheDetail::create([
+        DespatcheDetail::create(array_merge([
             'despatche_id' => $despatcheId,
             'tipAfeIgv' => '10',
             'codProducto' => $paquete->id,
             'unidad' => $paquete->und_medida,
             'descripcion' => 'SERVICIO TRASLADO ' . $paquete->description,
             'cantidad' => $paquete->cantidad,
-            'mtoValorUnitario' => $mtoValorUnitario,
-            'mtoValorVenta' => $mtoValorUnitario * $paquete->cantidad,
-            'mtoBaseIgv' => $mtoValorUnitario * $paquete->cantidad,
             'porcentajeIgv' => 18,
-            'igv' => ($paquete->amount - $mtoValorUnitario) * $paquete->cantidad,
-            'totalImpuestos' => ($paquete->amount - $mtoValorUnitario) * $paquete->cantidad,
-            'mtoPrecioUnitario' => $paquete->amount,
-        ]);
+        ], $this->calcIgvLinea($paquete->amount, $paquete->cantidad)));
     }
 }
