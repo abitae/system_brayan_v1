@@ -652,7 +652,7 @@ class RegisterLive extends Component
             'tipo_comprobante' => $this->estado_pago == 'CONTRA ENTREGA' ? 'TICKET' : $this->tipo_comprobante,
 
             'estado_credito' => $this->estado_pago == 'CONTRA ENTREGA' ? 'Pendiente' : 'Cancelado',
-            'docsTraslado' => json_encode($this->docsTraslado),
+            'docsTraslado' => json_encode($this->docsTraslado->values()->all()),
 
             'glosa' => $this->glosa,
             'observation' => $this->observation,

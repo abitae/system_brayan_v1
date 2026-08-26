@@ -76,8 +76,10 @@ class InvoiceCreateLive extends Component
         $this->ubigeo = $encomienda->remitente->ubigeo;
         $this->client = $encomienda->remitente;
         $this->paquetes = $encomienda->paquetes;
-        $this->docAdjunto = json_decode($encomienda->docsTraslado)[0]->documento ?? null;
-        $this->docAdjunto_type = json_decode($encomienda->docsTraslado)[0]->tipoDoc ?? null;
+        $docsTraslado = json_decode($encomienda->docsTraslado ?? '[]', true) ?: [];
+        $primerDoc = reset($docsTraslado) ?: null;
+        $this->docAdjunto = $primerDoc['documento'] ?? null;
+        $this->docAdjunto_type = $primerDoc['tipoDoc'] ?? null;
         $this->calculateTotals();
     }
     public function render()
