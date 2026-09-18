@@ -1,1 +1,1 @@
-<img src="./img/logo01.png" alt="Infinity" width="200" height="60">
+<img src="./img/logo01.png" alt="LA RANA EXPRESS" width="200" height="60">

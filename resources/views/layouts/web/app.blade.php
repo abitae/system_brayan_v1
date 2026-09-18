@@ -7,8 +7,8 @@
 <html lang="es" style="scroll-behavior: smooth;">
 <head>
   <meta charset="utf-8">
-  <title>Brayan Brush | Corporación Logística</title>
-  <meta name="end-point" content="https://brayanbruhs.pe/"/>
+  <title>LA RANA EXPRESS | Cargas y Encomiendas</title>
+  <meta name="end-point" content="{{ url('/') }}"/>
   <link href="{{ asset('frontend/css/bootstrap.css') }}" rel="stylesheet">
   <link href="{{ asset('frontend/css/revolution-slider.css') }}" rel="stylesheet">
   <link href="{{ asset('frontend/css/font-awesome.css') }}" rel="stylesheet">
@@ -76,8 +76,8 @@
           </a>
         </x-slot:claim_book>
         <x-slot:socials>
-          <a href="https://www.facebook.com/BrayanBrushTransporte" class="text-white item-social"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/brayan_brush/" class="text-white item-social"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white item-social"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white item-social"><i class="fab fa-instagram"></i></a>
         </x-slot:socials>
       </x-mary-footer>
 

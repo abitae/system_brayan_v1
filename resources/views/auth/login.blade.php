@@ -42,8 +42,8 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button class="ms-3">
+        <div class="mt-6">
+            <x-primary-button class="w-full justify-center">
                 {{ __('Iniciar sesión') }}
             </x-primary-button>
         </div>

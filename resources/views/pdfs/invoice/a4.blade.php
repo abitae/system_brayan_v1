@@ -376,7 +376,7 @@
                 <td class="footer-content">
                     Gracias por su compra<br>
                     Políticas de Envío<br>
-                    Corporación Logística Brayan Brush EIRL<br>
+                    LA RANA EXPRESS E.I.R.L.<br>
                     @if ($invoice->xml_hash)
                         Hash: {{ $invoice->xml_hash }}<br>
                     @endif

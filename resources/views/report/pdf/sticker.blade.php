@@ -26,7 +26,7 @@
   <table style="width: 100%">
       <tr>
         <td colspan="2" style="text-align: left;">
-          <strong class="titulo">Brayan Bursh</strong>
+          <strong class="titulo">LA RANA EXPRESS</strong>
         </td>
       </tr>
       <tr>

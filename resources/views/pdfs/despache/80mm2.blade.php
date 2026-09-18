@@ -42,7 +42,7 @@
             <div class="text-xs">
                 <img src="{{ env('APP_URL') }}/{{ $despache->company->logo_path }}" alt="Logo"
                     class="w-auto h-16 mx-auto mb-2">
-                <p class="font-semibold">CORPORACION LOGISTICA BRAYAN BRUSH</p>
+                <p class="font-semibold">LA RANA EXPRESS</p>
                 <p>R.U.C.: {{ $despache->company->ruc }}</p>
                 <p>{{ $despache->company->address }}</p>
                 <p>Telf: {{ $despache->company->telephone }}</p>
@@ -146,7 +146,7 @@
 
             Políticas de Envío
             <br>
-            <span>Corporación Logística Brayan Brush EIRL</span>
+            <span>LA RANA EXPRESS E.I.R.L.</span>
             <br>
             • El cliente debe proporcionar una dirección completa y un número de teléfono válido. Si no es posible
             contactar al destinatario o la dirección es incorrecta, el paquete será devuelto a nuestros almacenes.

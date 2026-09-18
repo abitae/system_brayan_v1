@@ -11,13 +11,13 @@
         'md' => ['box' => 'h-10 w-10', 'img' => 'h-7 w-7', 'title' => 'text-sm', 'subtitle' => 'text-[11px]'],
     ];
     $s = $sizes[$size] ?? $sizes['md'];
-    $appName = config('app.name', 'Infinity Cargo');
+    $appName = config('app.name', 'LA RANA EXPRESS');
 @endphp
 
 <a href="{{ route('dashboard') }}" {{ $attributes->merge(['class' => 'flex items-center gap-3 group']) }}>
     <div
         class="flex {{ $s['box'] }} shrink-0 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/20 transition-transform group-hover:scale-105">
-        <img src="{{ asset('img/logo01.png') }}" alt="{{ $appName }}" class="{{ $s['img'] }} w-auto object-contain" />
+        <img src="{{ asset('img/logo01.png') }}?v=rana" alt="{{ $appName }}" class="{{ $s['img'] }} w-auto object-contain" />
     </div>
 
     @if ($showText)

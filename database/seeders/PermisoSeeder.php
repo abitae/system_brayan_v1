@@ -70,7 +70,7 @@ class PermisoSeeder extends Seeder
         $role->syncPermissions(Permission::all());
         User::factory()->create([
             'name' => 'Administrador',
-            'email' => 'administrador@brayanbruhs.pe',
+            'email' => 'administrador@ranaexpress.pe',
             'sucursal_id' => 1,
             'isActive' => true,
             'password' => bcrypt('password'),
@@ -119,7 +119,7 @@ class PermisoSeeder extends Seeder
         foreach ($sucursales as $sucursal) {
             User::factory()->create([
                 'name' => 'Administrador ' . $sucursal->code,
-                'email' => 'admin.' . strtolower($sucursal->code) . '@brayanbruhs.pe',
+                'email' => 'admin.' . strtolower($sucursal->code) . '@ranaexpress.pe',
                 'sucursal_id' => $sucursal->id,
                 'isActive' => true,
                 'password' => bcrypt('password'),

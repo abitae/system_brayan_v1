@@ -225,7 +225,7 @@
     <table class="label">
         <tr class="top-bar">
             <td colspan="4">
-                <p class="brand">BRAYAN BRUSH EIRL</p>
+                <p class="brand">LA RANA EXPRESS EIRL</p>
                 <p class="brand-sub">Corporación Logística</p>
             </td>
             <td colspan="2">

@@ -107,7 +107,7 @@
 
 <body>
     <div class="header">
-        <div class="company-name">CORPORACIÓN LOGÍSTICO BRAYAN BRUHS E.I.R.L</div>
+        <div class="company-name">LA RANA EXPRESS E.I.R.L.</div>
         <div class="company-info">RUC: 20568031734</div>
         <div class="company-info">PJ. LOS PEDREGALES MZA. D LOTE. 4 GRU.SECTOR 3 LOS PEDREGAL - JUNÍN - HUANCAYO - EL TAMBO</div>
     </div>

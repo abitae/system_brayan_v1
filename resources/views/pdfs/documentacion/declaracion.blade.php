@@ -155,7 +155,7 @@
             □ Peruana □ Extranjera, identificado(a) con DNI/C.E. N° <span class="text-bold">{{ $encomienda->remitente->code }}</span>,
             declaro que la mercancía transportada a través de la agencia:
             <span class="text-bold">{{ $encomienda->sucursal_remitente->name }}</span>
-            de la empresa CORPORACIÓN LOGÍSTICO BRAYAN BRUHS E.I.R.L., corresponde a:
+            de la empresa LA RANA EXPRESS E.I.R.L., corresponde a:
         </div>
 
         <div class="document__section">

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brayan - Servicio de Envíos</title>
+    <title>LA RANA EXPRESS - Cargas y Encomiendas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -23,7 +23,7 @@
     <!-- filepath: /c:/Proyectos/transportes/resources/views/web2/index3.blade.php -->
     <div class="bg-abitae-green px-5 py-2.5 flex flex-wrap justify-between items-center">
         <div class="flex items-center pl-4 md:pl-80">
-            <img src="{{ asset('img/logo.png') }}" alt="Brayan Brush Logo" class="h-24 text-white">
+            <img src="{{ asset('img/logo.png') }}" alt="LA RANA EXPRESS" class="h-24 text-white">
         </div>
         <div class="flex md:hidden">
             <button id="menu-toggle" class="text-white focus:outline-none">
@@ -96,7 +96,7 @@
             <div class="py-2 px-2.5 flex items-center border-b border-gray-200">
 
                 <div  class="text-2xl">
-                    Flota Brayan
+                    Flota LA RANA EXPRESS
                     <span
                         class="bg-abitae-green text-white text-xs px-2 py-0.5 rounded-full ml-2.5 inline-block">NUEVO</span>
                 </div>
@@ -142,7 +142,7 @@
         <div class="px-5 mx-auto max-w-7xl">
             <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
                 <div>
-                    <h3 class="mb-4 text-xl font-bold">Brayan</h3>
+                    <h3 class="mb-4 text-xl font-bold">LA RANA EXPRESS</h3>
                     <p class="mb-4 text-gray-400">Tu mejor opción para envíos seguros y confiables en todo el país.</p>
                     <div class="flex space-x-4">
                         <a href="#" class="text-gray-400 transition-colors duration-300 hover:text-white">
@@ -213,20 +213,20 @@
                                 <path
                                     d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                             </svg>
-                            <span>+51 123 456 789</span>
+                            <span>976 790 973 / 963 508 032</span>
                         </li>
                         <li class="flex items-start">
                             <svg class="w-5 h-5 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                                 <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                             </svg>
-                            <span>contacto@Brayan.pe</span>
+                            <span>contacto@ranaexpress.pe</span>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="pt-8 mt-8 text-center text-gray-400 border-t border-gray-700">
-                <p>&copy; 2023 Brayan. Todos los derechos reservados.</p>
+                <p>&copy; {{ date('Y') }} LA RANA EXPRESS. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>

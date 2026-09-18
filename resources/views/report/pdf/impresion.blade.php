@@ -54,7 +54,7 @@
         <td colspan="2" class="text-center"> <img src="{{ convertImageBase64("logo_format_ticket.jpg") }}" style="height: 90px;"> </td>
       </tr>
       <tr>
-        <td colspan="2" class="titulo text-center">Brayan Brush E.I.R.L</td>
+        <td colspan="2" class="titulo text-center">LA RANA EXPRESS E.I.R.L.</td>
       </tr>
 
       <tr>

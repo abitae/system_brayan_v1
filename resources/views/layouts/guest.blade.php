@@ -6,45 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" href="{{ asset('img/logo01.ico') }}">
-    <!-- Fonts -->
+    <title>{{ config('app.name', 'LA RANA EXPRESS') }}</title>
+    <link rel="icon" href="{{ asset('img/logo.png') }}?v=rana">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased text-gray-900 bg-gray-100">
-    <div class="flex flex-col min-h-screen md:flex-row">
-        <!-- Image section - visible on medium screens and up -->
-        <div class="hidden bg-white md:flex md:w-1/2 lg:w-2/3">
-            <img src="{{ asset('img/imagen_login.jpg') }}" alt="{{ config('app.name', 'INFINITY-CARGO') }}"
-                 class="object-cover w-full h-full transition-opacity duration-300 hover:opacity-95">
-        </div>
+<body class="font-sans antialiased text-gray-900 bg-[#F7F8F4]">
+    <div class="flex min-h-screen md:h-screen md:overflow-hidden">
+        <aside class="relative hidden md:flex md:w-1/2 items-center justify-center bg-[#14351D] p-8 lg:p-12">
+            <img src="{{ asset('img/imagen_login.jpg') }}?v=rana"
+                 alt="{{ config('app.name', 'LA RANA EXPRESS') }}"
+                 class="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl bg-white shadow-2xl">
+        </aside>
 
-        <!-- Login form section -->
-        <div class="flex flex-col items-center justify-center w-full p-4 bg-white md:w-1/2 lg:w-1/3">
-            <!-- Logo -->
-            <div class="mt-4 mb-6 transition-transform duration-300 md:mt-0 hover:scale-105">
-                <a href="/" title="{{ config('app.name', 'INFINITY-CARGO') }}">
-                    <img src="{{ asset('img/logo01.png') }}" alt="{{ config('app.name', 'INFINITY-CARGO') }}" class="h-16 md:h-20">
-                </a>
-            </div>
+        <main class="flex flex-col items-center justify-center w-full px-4 py-10 overflow-y-auto md:w-1/2 bg-white">
+            <a href="{{ url('/') }}" title="{{ config('app.name', 'LA RANA EXPRESS') }}" class="mb-6">
+                <img src="{{ asset('img/logo01.png') }}?v=rana"
+                     alt="{{ config('app.name', 'LA RANA EXPRESS') }}"
+                     class="h-20 w-auto max-w-[280px] object-contain">
+            </a>
 
-            <!-- Form container -->
-            <div class="w-full max-w-md px-6 py-8 mx-auto bg-white border border-gray-500 shadow-2xl rounded-xl">
+            <div class="w-full max-w-sm px-6 py-7 bg-white border border-gray-200 shadow-xl rounded-2xl">
                 {{ $slot }}
             </div>
 
-            <!-- Footer -->
-            <div class="w-full max-w-md mt-8 mb-4 text-sm text-center text-gray-500">
+            <div class="w-full max-w-sm mt-6 text-sm text-center text-gray-500">
                 <p>Versión v3.0.0</p>
                 <p class="mt-1">© {{ date('Y') }} <a href="https://open9.cloud" target="_blank"
-                   class="font-medium text-green-600 transition-colors hover:text-green-800 hover:underline">OPEN9</a></p>
+                   class="font-medium text-[#2F6B32] hover:underline">OPEN9</a></p>
             </div>
-        </div>
+        </main>
     </div>
 </body>
 

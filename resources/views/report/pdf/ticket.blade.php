@@ -89,7 +89,7 @@
       </tr>
 
       <tr>
-        <td class="text-center titulo" colspan="2">Brayan Brush E.I.R.L</td>
+        <td class="text-center titulo" colspan="2">LA RANA EXPRESS E.I.R.L.</td>
       </tr>
 
       <tr>
@@ -259,7 +259,7 @@
 
   </div>
   <div class="footer">
-    Políticas de Envío - Corporación Logística Brayan Brush
+    Políticas de Envío - LA RANA EXPRESS
     <br>
 •	El cliente debe proporcionar una dirección completa y un número de teléfono válido. Si no es posible contactar al destinatario o la dirección es incorrecta, el paquete será devuelto a nuestros almacenes.
 •	Después de dos intentos fallidos, el envío será devuelto a nuestros almacenes. El cliente deberá coordinar el retiro o solicitar un nuevo envío, sujeto a costos adicionales.
