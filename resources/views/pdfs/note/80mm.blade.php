@@ -193,7 +193,7 @@
             <tr>
                 <td style="text-align: left"><strong>Total:</strong></td>
                 <td style="text-align: right"><strong>S/
-                        {{ number_format($note->mtoOperGravadas + $note->mtoIGV, 2) }}</strong></td>
+                        {{ number_format($note->mtoImpVenta, 2) }}</strong></td>
             </tr>
         </table>
     </div>

@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', function () {
     return view('livewire.facturacion.create-invoice');
 });
-//Route::get('/', 'welcome')->name('index');
+Route::get('/', [WebsiteController::class, 'index'])->name('index');
 Route::get('/nosotros', [WebsiteController::class, 'abount'])->name('abount');
 Route::get('/servicios', [WebsiteController::class, 'servicios'])->name('servicios');
 Route::get('/terminos', [WebsiteController::class, 'terminos'])->name('politicas-privacidad');

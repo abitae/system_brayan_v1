@@ -6,13 +6,14 @@ trait IgvCalculationTrait
 {
     protected function calcIgvMonto(float $montoIncIGV, float $factor = 0.18): array
     {
-        $base = round($montoIncIGV / (1 + $factor), 2);
-        $igv = round($base * $factor, 2);
+        $total = round($montoIncIGV, 2);
+        $base = round($total / (1 + $factor), 2);
+        $igv = round($total - $base, 2);
 
         return [
             'base' => $base,
             'igv' => $igv,
-            'total' => round($base + $igv, 2),
+            'total' => $total,
         ];
     }
 

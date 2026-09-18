@@ -282,7 +282,7 @@
         <tr class="total-final">
             <td></td>
             <td class="text-right">Total:</td>
-            <td class="text-right">S/ {{ number_format($note->mtoOperGravadas + $note->mtoIGV, 2) }}</td>
+            <td class="text-right">S/ {{ number_format($note->mtoImpVenta, 2) }}</td>
         </tr>
     </table>
 

@@ -1,0 +1,4 @@
+RUC
+20603506147
+Razón Social
+LA RANA EXPRESS E.I.R.L.

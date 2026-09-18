@@ -319,7 +319,7 @@
         <tr class="total-final">
             <td></td>
             <td class="text-right">Total:</td>
-            <td class="text-right">S/ {{ number_format($invoice->valorVenta + $invoice->mtoIGV, 2) }}</td>
+            <td class="text-right">S/ {{ number_format($invoice->mtoImpVenta, 2) }}</td>
         </tr>
     </table>
     @if ($invoice->setPercent && $invoice->setMount)
