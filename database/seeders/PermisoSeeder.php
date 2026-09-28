@@ -125,5 +125,8 @@ class PermisoSeeder extends Seeder
                 'password' => bcrypt('password'),
             ])->assignRole('Admin sucursal');
         }
+
+        Role::findOrCreate('Cliente', 'web');
+        Role::findOrCreate('Repartidor', 'web');
     }
 }

@@ -122,9 +122,25 @@
                             </div>
 
                             <div class="col-span-1 mt-1">
-                                <x-mary-button label='ENTREGAR' icon="o-pencil-square"
-                                    wire:click="openModal({{ $stuff->id }})" spinner
-                                    class="w-full h-full text-white bg-purple-500 btn-xs" />
+                                @if ($stuff->repartidor_user_id)
+                                    <x-mary-badge :value="'Repartidor: '.($stuff->repartidor->name ?? '')"
+                                        class="w-full text-white bg-amber-600" />
+                                @else
+                                    <x-mary-button label='ENTREGAR' icon="o-pencil-square"
+                                        wire:click="openModal({{ $stuff->id }})" spinner
+                                        class="w-full h-full text-white bg-purple-500 btn-xs" />
+                                @endif
+                            </div>
+                            <div class="col-span-2 mt-1">
+                                <select class="select select-bordered select-xs w-full"
+                                    wire:change="asignarRepartidor({{ $stuff->id }}, $event.target.value)">
+                                    <option value="">Asignar repartidor</option>
+                                    @foreach ($repartidores as $repartidor)
+                                        <option value="{{ $repartidor->id }}" @selected($stuff->repartidor_user_id == $repartidor->id)>
+                                            {{ $repartidor->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-span-2 mt-1">
                                 <x-mary-badge :value="strtoupper($stuff->estado_pago)"

@@ -5,10 +5,12 @@ namespace App\Livewire\Package;
 use App\Livewire\Forms\CustomerForm;
 use App\Livewire\Forms\EntryCajaForm;
 use App\Livewire\Forms\ExitCajaForm;
-use App\Models\Caja\Caja;
 use App\Models\Configuration\Sucursal;
 use App\Models\Package\Customer;
 use App\Models\Package\Encomienda;
+use App\Models\User;
+use App\Services\AsignacionRepartidorService;
+use App\Services\EntregaDomicilioService;
 use App\Traits\CajaTrait;
 use App\Traits\InvoiceTrait;
 use App\Traits\LogCustom;
@@ -63,15 +65,10 @@ class HomePackageLive extends Component
 
     public function mount()
     {
-        $this->caja = Caja::where('user_id', Auth::user()->id)
-            ->where('isActive', true)
-            ->latest()->first();
-        if (!$this->caja) {
-            $this->redirectRoute('caja.index');
-        }
+        $this->caja = $this->cajaIsActive(Auth::user());
         $this->sucursal_id = Sucursal::where('isActive', true)
-            ->whereNotIn('id', [Auth::user()->sucursal->id])
-            ->first()->id;
+            ->where('id', '!=', Auth::user()->sucursal_id)
+            ->value('id');
         $this->filtroFechaInicio = $this->filterDateStart();
         $this->filtroFechaFin = $this->filterDateEnd();
     }
@@ -120,8 +117,15 @@ class HomePackageLive extends Component
                     });
             });
         }
-        $encomiendas = $encomiendas->latest()
+        $encomiendas = $encomiendas->with('repartidor')->latest()
             ->paginate($this->perPage, '*', 'page');
+
+        $repartidores = User::role('Repartidor')
+            ->where('sucursal_id', Auth::user()->sucursal_id)
+            ->where('isActive', true)
+            ->whereNotNull('transportista_id')
+            ->orderBy('name')
+            ->get();
 
         $pagos = [
             ['id' => 'PAGADO', 'name' => 'PAGADO'],
@@ -137,7 +141,7 @@ class HomePackageLive extends Component
             ['codigo' => '1', 'sigla' => 'DNI cod(1)'],
             ['codigo' => '6', 'sigla' => 'RUC cod(6)'],
         ];
-        return view('livewire.package.home-package-live', compact('encomiendas', 'sucursals', 'pagos', 'comprobantes', 'tipoDocuments'));
+        return view('livewire.package.home-package-live', compact('encomiendas', 'sucursals', 'pagos', 'comprobantes', 'tipoDocuments', 'repartidores'));
     }
 
     public function detailEncomienda(Encomienda $encomienda)
@@ -148,18 +152,23 @@ class HomePackageLive extends Component
 
     public function openModal(Encomienda $encomienda)
     {
+        if (! $this->puedeEntregarEnOficina($encomienda)) {
+            return;
+        }
+
         $this->document = $encomienda->destinatario->code;
         $this->pin = '';
-        $this->modalDeliver = !$this->modalDeliver;
+        $this->modalDeliver = ! $this->modalDeliver;
         $this->encomienda = $encomienda;
     }
 
     public function deliverPaquetes()
     {
-        if ($this->encomienda->isHome) {
-            $this->pin = 123;
+        if (! $this->puedeEntregarEnOficina($this->encomienda)) {
+            return;
         }
-        if ($this->encomienda->destinatario->code == $this->document && $this->encomienda->pin == $this->pin) {
+
+        if ($this->encomienda->destinatario->code == $this->document && (int) $this->encomienda->pin === (int) $this->pin) {
             $this->customerFact->setCustomer($this->encomienda->destinatario);
             $this->estado_pago = $this->encomienda->estado_pago;
             $this->modalDeliver = false;
@@ -171,10 +180,18 @@ class HomePackageLive extends Component
 
     public function confirmEncomienda()
     {
+        if (! $this->puedeEntregarEnOficina($this->encomienda)) {
+            return;
+        }
+
         if ($this->encomienda->estado_pago == 'PAGADO') {
-            $this->encomienda->fecha_entrega = Carbon::now();
-            $this->encomienda->estado_encomienda = 'ENTREGADO';
-            $this->encomienda->save();
+            try {
+                app(EntregaDomicilioService::class)->marcarEntregadaEnOficina($this->encomienda);
+            } catch (\Illuminate\Validation\ValidationException $exception) {
+                $this->error('Error', collect($exception->errors())->flatten()->first() ?? 'No se pudo entregar la encomienda.');
+
+                return;
+            }
         }
         $this->modalConfimation = false;
         $this->modalFinal = true;
@@ -250,13 +267,31 @@ class HomePackageLive extends Component
             ]
         );
     }
+    public function asignarRepartidor(int $encomiendaId, $repartidorUserId): void
+    {
+        if ($repartidorUserId === '' || $repartidorUserId === null) {
+            return;
+        }
+
+        $encomienda = Encomienda::findOrFail($encomiendaId);
+        $repartidor = User::findOrFail((int) $repartidorUserId);
+
+        try {
+            app(AsignacionRepartidorService::class)->asignar(Auth::user(), $encomienda, $repartidor);
+            $this->success('Repartidor asignado');
+        } catch (\Illuminate\Validation\ValidationException $exception) {
+            $this->error('Error', collect($exception->errors())->flatten()->first());
+        }
+    }
+
     public function cobrarEncomienda()
     {
+        if (! $this->puedeEntregarEnOficina($this->encomienda)) {
+            return;
+        }
+
         if ($this->tipo_comprobante == 'TICKET') {
             $this->cliFacturacion = $this->encomienda->facturacion;
-            if(is_numeric($this->monto_descuento) && $this->monto_descuento < $this->encomienda->monto){
-                $this->descuentoCreate();
-            }
         }
         if ($this->tipo_comprobante == 'FACTURA' && $this->cliFacturacion_type_code != '6') {
             $this->error('Ops', 'El cliente de Facturacion debe ser un RUC!');
@@ -275,25 +310,22 @@ class HomePackageLive extends Component
             'metodo_pago.required' => 'El método de pago es requerido',
         ];
         $this->validate($rules, $message);
-        $this->encomienda->customer_fact_id = $this->cliFacturacion->id;
-        $this->encomienda->tipo_comprobante = $this->tipo_comprobante;
-        $this->encomienda->tipo_pago = $this->tipo_pago;
-        $this->encomienda->metodo_pago = $this->metodo_pago;
-        $this->encomienda->estado_encomienda = 'ENTREGADO';
-        $this->encomienda->save();
-        if ($this->tipo_pago == 'Contado') {
-            $this->cajaEntry(
-                $this->cajaIsActive(Auth::user())->id,
-                $this->encomienda->monto,
-                $this->encomienda->code,
+
+        try {
+            app(EntregaDomicilioService::class)->cobrar(
+                Auth::user(),
+                $this->encomienda,
+                $this->cliFacturacion,
+                $this->tipo_comprobante,
+                $this->tipo_pago,
                 $this->metodo_pago,
-                $this->encomienda->tipo_comprobante
+                is_numeric($this->monto_descuento) ? (float) $this->monto_descuento : null,
             );
+        } catch (\Illuminate\Validation\ValidationException $exception) {
+            $this->error('Ops', collect($exception->errors())->flatten()->first() ?? 'No se pudo cobrar la encomienda');
+            return;
         }
-        if ($this->tipo_comprobante != 'TICKET') {
-            $this->setInvoice($this->encomienda, $this->tipo_comprobante);
-            //$this->setGuiTrans($this->encomienda);
-        }
+
         $this->modalCobrar = false;
         $this->modalFinal = true;
     }
@@ -305,6 +337,24 @@ class HomePackageLive extends Component
             $this->encomienda->tipo_comprobante = $tipo_comprobante;
         }
         $this->encomienda->save();
+    }
+
+    private function puedeEntregarEnOficina(Encomienda $encomienda): bool
+    {
+        if ($encomienda->repartidor_user_id) {
+            $this->error('Error', 'Esta encomienda está asignada a un repartidor.');
+
+            return false;
+        }
+
+        $this->caja = $this->cajaIsActive(Auth::user());
+        if (! $this->caja) {
+            $this->error('Error', 'Debe abrir caja para entregar encomiendas.');
+
+            return false;
+        }
+
+        return true;
     }
 
     public function descuento(Encomienda $encomienda)

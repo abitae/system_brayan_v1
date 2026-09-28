@@ -18,6 +18,7 @@ class Encomienda extends Model
     protected $fillable = [
         'code',
         'user_id',
+        'repartidor_user_id',
         'transportista_id',
         'vehiculo_id',
         'customer_id',
@@ -65,6 +66,10 @@ class Encomienda extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function repartidor()
+    {
+        return $this->belongsTo(User::class, 'repartidor_user_id');
     }
     public function transportista()
     {

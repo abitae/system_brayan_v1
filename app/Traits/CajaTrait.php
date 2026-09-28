@@ -2,9 +2,8 @@
 namespace App\Traits;
 
 use App\Models\Caja\Caja;
-use App\Models\Caja\EntryCaja;
-use App\Models\Caja\ExitCaja;
 use App\Models\User;
+use App\Services\CajaService;
 use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf as Pdf;
 trait CajaTrait
 {
@@ -13,9 +12,7 @@ trait CajaTrait
      */
     function cajaIsActive(User $user)
     {
-        return Caja::where('user_id', $user->id)
-            ->where('isActive', true)
-            ->latest()->first();
+        return app(CajaService::class)->activeFor($user);
     }
     /*
      *   Función para obtener la caja cerrada
@@ -31,14 +28,7 @@ trait CajaTrait
      */
     function cajaEntry(int $caja_id, float $monto, string $description,string $metodo_pago, string $tipo)
     {
-        $entry = EntryCaja::create([
-            'caja_id' => $caja_id,
-            'monto_entry' => $monto,
-            'description' => $description,
-            'metodo_pago' => $metodo_pago,
-            'tipo_entry' => $tipo,
-        ]);
-        return $entry;
+        return app(CajaService::class)->entry($caja_id, $monto, $description, $metodo_pago, $tipo);
     }
 
     /*
@@ -46,14 +36,7 @@ trait CajaTrait
      */
     function cajaExit(int $caja_id, float $monto, string $description,string $metodo_pago, string $tipo)
     {
-        $exit = ExitCaja::create([
-            'caja_id' => $caja_id,
-            'monto_exit' => $monto,
-            'description' => $description,
-            'metodo_pago' => $metodo_pago,
-            'tipo_exit' => $tipo,
-        ]);
-        return $exit;
+        return app(CajaService::class)->exit($caja_id, $monto, $description, $metodo_pago, $tipo);
     }
     /*
      *   Función para crear entrada o salida de caja
