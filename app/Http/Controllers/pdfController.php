@@ -220,10 +220,52 @@ class pdfController extends Controller
 
     public function ticketA4(Ticket $ticket)
     {
+        $ticket->loadMissing('encomienda');
+
         $data = [
             'ticket' => $ticket,
+            'qrCode' => $this->qrCodeBase64($ticket->encomienda->code, 120),
         ];
-        $pdf = Pdf::loadView('pdfs.ticket.ticket-a4', $data);
+        $pdf = Pdf::loadView(
+            'pdfs.ticket.ticket-a4',
+            $data,
+            [],
+            [
+                'mode' => '',
+                'format' => 'A4',
+                'default_font_size' => '12',
+                'default_font' => 'sans-serif',
+                'margin_left' => 15,
+                'margin_right' => 15,
+                'margin_top' => 10,
+                'margin_bottom' => 5,
+                'margin_header' => 0,
+                'margin_footer' => 0,
+                'orientation' => 'P',
+                'title' => $ticket->serie,
+                'author' => 'Abel Arana',
+                'creator' => 'Abel Arana',
+                'subject' => 'Abel Arana',
+                'keywords' => 'Abel Arana',
+                'watermark' => $ticket->encomienda->estado_pago,
+                'show_watermark' => true,
+                'show_watermark_image' => false,
+                'watermark_font' => 'sans-serif',
+                'display_mode' => 'fullpage',
+                'watermark_text_alpha' => 0.1,
+                'watermark_image_path' => '',
+                'watermark_image_alpha' => 0.2,
+                'watermark_image_size' => 'D',
+                'watermark_image_position' => 'P',
+                'custom_font_dir' => '',
+                'custom_font_data' => [],
+                'auto_language_detection' => false,
+                'temp_dir' => storage_path('app'),
+                'pdfa' => false,
+                'pdfaauto' => false,
+                'use_active_forms' => false,
+            ]
+        );
         return $pdf->stream($ticket->serie . '.pdf');
     }
 
